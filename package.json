@@ -1,0 +1,23 @@
+{
+  "name": "desafio-igti",
+  "version": "1.0.0",
+  "description": "Primeiro desafio do bootcamp do IGTI",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kennedyFerreira/desafioIGTI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kennedyFerreira/desafioIGTI/issues"
+  },
+  "homepage": "https://github.com/kennedyFerreira/desafioIGTI#readme",
+  "dependencies": {
+    "json-server": "^0.16.1"
+  }
+}

@@ -1,45 +1,70 @@
-let userResults, userStatistics, inputText;
-let usersGender, usersNames, usersAge, userData;
+let inputText, button;
+let searchResult, statistics;
+let usersData;
 
-window.addEventListener('load', async () => {
-  const res = await fetch('https://randomuser.me/api/?seed=javascript&results=100&nat=BR&noinfo')
-  const data = await res.json()
-  
-  // userData = data.results
-  
-  // usersGender = userData.map(element => element.gender)
-  userData = data.results.map(element => {
-    let {first, last} = element.name
-    let gender = element.gender
-    let {age} = element.dob
-    
-    
+function start() {
+  inputText = document.querySelector('input[type=text]')
+  button = document.querySelector('button')
+  searchResult = document.querySelector('.users')
+  statistics = document.querySelector('.statistics')
+
+  fecthUsers()
+  inputActive()
+}
+
+async function fecthUsers() {
+  const users = await fetch('https://randomuser.me/api/?seed=javascript&results=100&nat=BR&noinfo')
+  const json = await users.json()
+
+  usersData = json.results.map(element => {
+    let {
+      name,
+      gender,
+      dob,
+      picture
+    } = element
+
+    return {
+      name: `${name.first} ${name.last}`,
+      gender,
+      age: dob.age,
+      picture: picture.thumbnail
+    }
+  }).sort((a, b) => {
+    return a.name.localeCompare(b.name)
   })
-  // usersAge = userData.map(element => element.dob.age)
+}
 
-  userResults = document.querySelector('div.searchResult')
-  userStatistics = document.querySelector('div.statistics')
-  inputText = document.querySelector('input[type=text')
-  
-  console.log(userData)
+function inputActive() {
+  let inputValue;
 
-  innputActive()
-  
-  
-})
+  button.addEventListener('click', () => getResults(inputValue))
 
-// function innputActive(){
-//   inputText.addEventListener('keyup', event => {
-//     if(event.key === 'Enter'){
-//       resultSearch()
-//     }
-//   })
-// }
+  inputText.addEventListener('keyup', e => {
+    inputValue = inputText.value.toLowerCase()
+    if (e.key !== 'Enter') {
+      return
+    }
+    getResults(inputValue)
+  })
+}
 
-// function resultSearch() {
-//   let valueSearch = inputText.value
+function getResults(inputValue) {
+  let usersResult = usersData.filter(element => {
+    return element.name.toLowerCase().includes(inputValue) == true
+  })
+  console.log(usersResult)
 
-//   let namesResults = usersNames.filter(element => element.first.toLowerCase() == valueSearch || element.last.toLowerCase() == valueSearch)
+  render(usersResult)
+}
 
-//   console.log(namesResults)
-// }
+function render(usersResult) {
+  searchResult.innerHTML = `
+  <img src="${usersResult.picture}" alt="foto"> 
+  <span>${usersResult.name}</span>, 
+  <span>${usersResult.age}</span>
+  `
+}
+
+
+start()
